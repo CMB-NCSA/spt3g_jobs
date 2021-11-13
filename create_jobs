@@ -1,0 +1,83 @@
+#!/usr/bin/env python3
+from string import Template
+import argparse
+import yaml
+
+
+def cmdline():
+
+    # Make a proto-parse use to read in the default yaml configuration
+    # file, Turn off help, so we print all options in response to -h
+    conf_parser = argparse.ArgumentParser(add_help=False)
+    conf_parser.add_argument("-c", "--configfile", help="Config file")
+    args, remaining_argv = conf_parser.parse_known_args()
+    # If we have -c or --config, then we proceed to read it
+    if args.configfile:
+        conf_defaults = yaml.safe_load(open(args.configfile))
+    else:
+        conf_defaults = {}
+    # 2. This is the main parser
+    parser = argparse.ArgumentParser(description="SPT3G batch file creator",
+                                     # Inherit options from config_parser
+                                     parents=[conf_parser])
+    parser.add_argument("--N_nodes", type=int, action="store", default=1,
+                        help="The number of nodes requested")
+    parser.add_argument("--N_cores", type=int, action="store", default=1,
+                        help="The number of cores requested")
+    parser.add_argument("--time_requested", type=str, action="store", default="00:40:00",
+                        help="The amount of time requested")
+    parser.add_argument("--memory", type=int, action="store", default=16,
+                        help="The memory in Gb")
+    parser.add_argument("--partition_name", type=str, action="store", default="caps",
+                        help="The name of the ICC partition (i.e. caps)")
+    parser.add_argument("--node_list", type=str, action="store", default=None,
+                        help="The node list, i.e. ccc0246")
+    parser.add_argument("--node_array", type=str, action="store", default=None,
+                        help="The node array, i.e. 0-19")
+    parser.add_argument("--singExec_name", type=str, action="store", default='test.sh',
+                        help="The exec bash script to run")
+
+    # The command we will call
+    parser.add_argument("--loop_list", type=str, action="store", default=None,
+                        help="The list of inputs to loop over")
+    parser.add_argument("--cmd_call", type=str, action="store", default=None,
+                        help="The command call string")
+    parser.add_argument("--outdir", type=str, action="store", default="job",
+                        help="The output directory")
+
+    # Define the singularity image
+    parser.add_argument("--singularity_cache", type=str, action="store",
+                        default='/projects/caps/spt3g/singularity/',
+                        help="The name of the singularity image to use")
+    parser.add_argument("--singularity_image", type=str, action="store",
+                        default='ubuntu_0.2.1_13ccb00c.si',
+                        help="The name of the singularity image to use")
+
+    # Set the defaults of argparse using the values in the yaml config file
+    parser.set_defaults(**conf_defaults)
+    args = parser.parse_args(args=remaining_argv)
+    return args
+
+
+def update_template(filename, d):
+    """ Read and update a template using a dictionary"""
+    with open(filename, 'r') as f:
+        src = Template(f.read())
+    r = src.substitute(d)
+    return r
+
+
+if __name__ == "__main__":
+
+    # Get the command-line arguments
+    args = cmdline()
+
+    # Load and update the submitN template
+    template_submitN = 'etc/submitN.sl'
+    r = update_template(template_submitN, args.__dict__)
+    print(r)
+
+    # Load and update the singExec template
+    template_singleExec = 'etc/singExec.sh'
+    r = update_template(template_singleExec, args.__dict__)
+    print(r)

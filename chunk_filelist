@@ -1,0 +1,79 @@
+#!/usr/bin/env python3
+import argparse
+import math
+import os
+
+
+def cmdline():
+
+    epilog = "Example: %(prog)s /data/spt3g/raw/*/*90*.g3.gz  " \
+             "--outdir ~/test  --basename files_90GHz --nperchunk 100"
+
+    parser = argparse.ArgumentParser(description="File list chunker", epilog=epilog)
+    parser.add_argument("files", nargs='+',
+                        help="Filename(s) to ingest")
+    parser.add_argument("--outdir", type=str, action='store', default=None,
+                        required=True, help="Location for output files")
+    parser.add_argument("--basename", type=str, action='store', default='filelist',
+                        help="Basename for output lists")
+    parser.add_argument("--nchunks", type=int, default=None,
+                        help="Number of chunk to create")
+    parser.add_argument("--nperchunk", type=int, default=None,
+                        help="Number of files in each chunk")
+    args = parser.parse_args()
+
+    # Check definitions make sense
+    if args.nchunks is None and args.nperchunk is None:
+        raise Exception("Error: must define either Nchunks or Nperchunk")
+    # The total number of files
+    args.nfiles = len(args.files)
+
+    # Define chunks and nperchunk
+    if args.nchunks is not None:
+        args.nperchunk = math.ceil(args.nfiles/args.nchunks)
+    else:
+        args.nchunks = math.ceil(args.nfiles/args.nperchunk)
+    return args
+
+
+def chunker(seq, size):
+    "Chunk a sequence in chunks of a given size"
+    return (seq[pos:pos + size] for pos in range(0, len(seq), size))
+
+
+if __name__ == "__main__":
+
+    # Get the command-line arguments
+    args = cmdline()
+
+    # Check for outdir
+    if not os.path.isdir(args.outdir):
+        print(f"# Creating new dir: {args.outdir}")
+        os.makedirs(args.outdir)
+
+    # Make the chunks of files
+    chunks = chunker(args.files, args.nperchunk)
+
+    # List to keep all of the lists
+    outnames_main = []
+
+    # Loop over the chunks
+    k = 1
+    for c in chunks:
+        # Construct the name of the outpulist
+        basename_list = f"{args.basename}_{k:02}.list"
+        outname_list = os.path.join(args.outdir, basename_list)
+        outnames_main.append(outname_list)
+        # Write out the contents
+        with open(outname_list, 'w') as f:
+            for item in c:
+                f.write(f"{item}\n")
+        print(f"Done: {outname_list} -- {len(c)} files")
+        k += 1
+
+    # Now we need a main file with all of the lists
+    main_list = os.path.join(args.outdir, f"{args.basename}_main.list")
+    with open(main_list, 'w') as f:
+        for item in outnames_main:
+            f.write(f"{item}\n")
+    print(f"Wrote: main file with list to: {main_list}")
