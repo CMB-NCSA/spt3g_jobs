@@ -15,7 +15,6 @@ partition_name: caps
 node_list: ccc0246
 # The array of nodes (to map $SLURM_ARRAY_TASK_ID)
 node_array: "0-19"
-singExec_name: example.sh
 
 # Singulary Definitions
 singularity_cache: /projects/caps/spt3g/singularity
