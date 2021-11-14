@@ -21,3 +21,7 @@ Cookbook Example
    # Slurm submit file: job/submit_dir/submitN.sl
    # SingleExec file: job/submit_dir/singExec.sh
    ```
+3. Submit the job:
+   ```
+   sbatch job/submit_dir/submitN.sl
+   ```
