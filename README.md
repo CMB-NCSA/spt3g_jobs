@@ -15,3 +15,9 @@ Cookbook Example
 2. Create the input files to run slum jobs using arrays
 
    ```create_jobs -c etc/spt3g_ingest_example.yaml --loop_list jobs/lists/files_90GHz_main.list```
+
+   This will create the two files needs to run `slurm`
+   ```
+   # Slurm submit file: job/submit_dir/submitN.sl
+   # SingleExec file: job/submit_dir/singExec.sh
+   ```
