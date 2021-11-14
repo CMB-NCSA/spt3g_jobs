@@ -2,6 +2,7 @@
 from string import Template
 import argparse
 import yaml
+import os
 
 
 def cmdline():
@@ -59,12 +60,14 @@ def cmdline():
     return args
 
 
-def update_template(filename, d):
+def update_template(filename, d, outfile):
     """ Read and update a template using a dictionary"""
     with open(filename, 'r') as f:
         src = Template(f.read())
     r = src.substitute(d)
-    return r
+    with open(outfile, 'w') as f:
+        f.write(r)
+    return
 
 
 if __name__ == "__main__":
@@ -72,12 +75,23 @@ if __name__ == "__main__":
     # Get the command-line arguments
     args = cmdline()
 
+    # Define output folder
+    submit_dir = os.path.join(args.outdir, 'submit_dir')
+    if not os.path.isdir(submit_dir):
+        os.makedirs(submit_dir)
+
+    # Get the local path to get the templates
+    pckg_path = os.path.dirname(os.path.realpath(__file__))
+
     # Load and update the submitN template
-    template_submitN = 'etc/submitN.sl'
-    r = update_template(template_submitN, args.__dict__)
-    print(r)
+    template_submitN = os.path.join(pckg_path, 'etc/submitN.sl')
+    outfile_submitN = os.path.join(submit_dir, 'submitN.sl')
+    update_template(template_submitN, args.__dict__, outfile_submitN)
+    print(f"# Slurm submit file: {outfile_submitN}")
 
     # Load and update the singExec template
-    template_singleExec = 'etc/singExec.sh'
-    r = update_template(template_singleExec, args.__dict__)
-    print(r)
+    template_singleExec = os.path.join(pckg_path, 'etc/singExec.sh')
+    outfile_singleExec = os.path.join(submit_dir, 'singExec.sh')
+    update_template(template_singleExec, args.__dict__, outfile_singleExec)
+    print(f"# SingleExec file: {outfile_singleExec}")
+    print("# Done")

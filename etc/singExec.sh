@@ -1,4 +1,3 @@
-# =------=
 #!/bin/bash
 
 # This is the main list that we will loop over
