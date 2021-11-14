@@ -18,7 +18,7 @@ node_array: "0-19"
 
 # Singulary Definitions
 singularity_cache: /projects/caps/spt3g/singularity
-singularity_image: ubuntu_0.2.1_13ccb00c.sif
+singularity_image: ubuntu_0.2.2_13ccb00c.sif
 
 
 # The call:
