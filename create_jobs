@@ -83,15 +83,16 @@ if __name__ == "__main__":
     # Get the local path to get the templates
     pckg_path = os.path.dirname(os.path.realpath(__file__))
 
+    # Load and update the singExec template
+    template_singleExec = os.path.join(pckg_path, 'etc/singExec.sh')
+    args.singExec_fullname = os.path.join(submit_dir, args.singExec_name)
+    update_template(template_singleExec, args.__dict__, args.singExec_fullname)
+    print(f"# SingleExec file: {args.singExec_fullname}")
+
     # Load and update the submitN template
     template_submitN = os.path.join(pckg_path, 'etc/submitN.sl')
     outfile_submitN = os.path.join(submit_dir, 'submitN.sl')
     update_template(template_submitN, args.__dict__, outfile_submitN)
     print(f"# Slurm submit file: {outfile_submitN}")
 
-    # Load and update the singExec template
-    template_singleExec = os.path.join(pckg_path, 'etc/singExec.sh')
-    outfile_singleExec = os.path.join(submit_dir, 'singExec.sh')
-    update_template(template_singleExec, args.__dict__, outfile_singleExec)
-    print(f"# SingleExec file: {outfile_singleExec}")
     print("# Done")

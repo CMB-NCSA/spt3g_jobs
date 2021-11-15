@@ -10,4 +10,4 @@
 #SBATCH --output=out/job_array_example_%A_%a.out
 #SBATCH --error=out/job_array_example_%A_%a.err
 
-srun $singExec_name
+srun $singExec_fullname
