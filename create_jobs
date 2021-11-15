@@ -35,7 +35,7 @@ def cmdline():
                         help="The node list, i.e. ccc0246")
     parser.add_argument("--node_array", type=str, action="store", default=None,
                         help="The node array, i.e. 0-19")
-    parser.add_argument("--singExec_name", type=str, action="store", default='test.sh',
+    parser.add_argument("--singExec_name", type=str, action="store", default='singExec.sh',
                         help="The exec bash script to run")
 
     # The command we will call

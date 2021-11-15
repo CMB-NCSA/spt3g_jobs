@@ -20,6 +20,8 @@ node_array: "0-19"
 singularity_cache: /projects/caps/spt3g/singularity
 singularity_image: ubuntu_0.2.2_13ccb00c.sif
 
+# The name of the single exec bash script
+singExec_name: singExec.sh
 
 # The call:
 cmd_call: >
