@@ -7,7 +7,7 @@
 #SBATCH --nodelist=$node_list
 
 #SBATCH --array=$node_array
-#SBATCH --output=out/job_array_example_%A_%a.out
-#SBATCH --error=out/job_array_example_%A_%a.err
+#SBATCH --output=$submit_dir/logs/job_array_example_%A_%a.out
+#SBATCH --error=$submit_dir/logs/job_array_example_%A_%a.err
 
 srun $singExec_fullname

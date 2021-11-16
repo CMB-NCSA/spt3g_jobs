@@ -6,14 +6,23 @@ LOOP_FILE_LIST=$loop_list
 LOOP_LIST=($$(<$${LOOP_FILE_LIST}))
 # Select the index in the array using the internal variable SLURM_ARRAY_TASK_ID
 INPUTLIST=$${LOOP_LIST[$${SLURM_ARRAY_TASK_ID}]}
-# Define the OUTDIR
-OUTDIR=$outdir
 # Define the singularity image to use
 SINGULARITY_APP=$singularity_cache/$singularity_image
+# Make the wrapper with the cmd_call
+WRAPPER_NAME=$$PWD/wrapper_$${SLURM_ARRAY_TASK_ID}.sh
+echo "#!/bin/bash" > $$WRAPPER_NAME
+echo "source /opt/spt/setSPTEnv.sh" >> $$WRAPPER_NAME
+echo "source /opt/spt/spt3g_ingest/setpath.sh /opt/spt/spt3g_ingest" >> $$WRAPPER_NAME
+echo $cmd_call >> $$WRAPPER_NAME
+chmod +x $$WRAPPER_NAME
 
-echo "Singulary mage: $${SINGULARITY_APP}"
+echo ""
+echo "------------ Job variables ---------------------"
+echo "Singulary image: $${SINGULARITY_APP}"
 echo "Input list: $${INPUTLIST}"
-echo "Running command: $${cmd_call}"
-echo "Outputs path: $${OUTDIR} "
+echo "WRAPPER_NAME: $${WRAPPER_NAME}"
+echo "Running command:"
+echo " ${cmd_call}"
+echo ""
 
-singularity exec --bind /projects $$SINGULARITY_APP $cmd_call
+singularity exec --bind /projects $$SINGULARITY_APP $$WRAPPER_NAME

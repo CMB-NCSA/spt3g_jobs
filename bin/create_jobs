@@ -3,6 +3,7 @@ from string import Template
 import argparse
 import yaml
 import os
+import stat
 
 
 def cmdline():
@@ -43,7 +44,7 @@ def cmdline():
                         help="The list of inputs to loop over")
     parser.add_argument("--cmd_call", type=str, action="store", default=None,
                         help="The command call string")
-    parser.add_argument("--outdir", type=str, action="store", default="job",
+    parser.add_argument("--submit_dir", type=str, action="store", default="submit_dir",
                         help="The output directory")
 
     # Define the singularity image
@@ -75,24 +76,34 @@ if __name__ == "__main__":
     # Get the command-line arguments
     args = cmdline()
 
-    # Define output folder
-    submit_dir = os.path.join(args.outdir, 'submit_dir')
-    if not os.path.isdir(submit_dir):
-        os.makedirs(submit_dir)
+    args.cmd_call = args.cmd_call.rstrip()
+
+    # Define output folder for submit files
+    if not os.path.isdir(args.submit_dir):
+        os.makedirs(args.submit_dir)
+        os.makedirs(f"{args.submit_dir}/logs")
 
     # Get the local path to get the templates
-    pckg_path = os.path.dirname(os.path.realpath(__file__))
+    try:
+        SPT3G_JOBS_DIR = os.environ['SPT3G_JOBS_DIR']
+    except KeyError:
+        SPT3G_JOBS_DIR = __file__.split('bin')[0]
 
     # Load and update the singExec template
-    template_singleExec = os.path.join(pckg_path, 'etc/singExec.sh')
-    args.singExec_fullname = os.path.join(submit_dir, args.singExec_name)
+    template_singleExec = os.path.join(SPT3G_JOBS_DIR, 'etc/singExec.sh')
+    args.singExec_fullname = os.path.join(args.submit_dir, args.singExec_name)
     update_template(template_singleExec, args.__dict__, args.singExec_fullname)
+    # Make it executable
+    st = os.stat(args.singExec_fullname)
+    os.chmod(args.singExec_fullname, st.st_mode | stat.S_IEXEC)
     print(f"# SingleExec file: {args.singExec_fullname}")
 
     # Load and update the submitN template
-    template_submitN = os.path.join(pckg_path, 'etc/submitN.sl')
-    outfile_submitN = os.path.join(submit_dir, 'submitN.sl')
+    template_submitN = os.path.join(SPT3G_JOBS_DIR, 'etc/submitN.sl')
+    outfile_submitN = os.path.join(args.submit_dir, 'submitN.sl')
     update_template(template_submitN, args.__dict__, outfile_submitN)
     print(f"# Slurm submit file: {outfile_submitN}")
-
     print("# Done")
+
+    print("# to run:")
+    print(f"\t sbatch {outfile_submitN}")
