@@ -9,7 +9,8 @@ INPUTLIST=$${LOOP_LIST[$${SLURM_ARRAY_TASK_ID}]}
 # Define the singularity image to use
 SINGULARITY_APP=$singularity_cache/$singularity_image
 # Make the wrapper with the cmd_call
-WRAPPER_NAME=$$PWD/wrapper_$${SLURM_ARRAY_TASK_ID}.sh
+DATE=`date +"%F%Z%R"`
+WRAPPER_NAME=$$PWD/wrapper_$${DATE}_$${SLURM_ARRAY_TASK_ID}.sh
 echo "#!/bin/bash" > $$WRAPPER_NAME
 echo "source /opt/spt/setSPTEnv.sh" >> $$WRAPPER_NAME
 echo "source /opt/spt/spt3g_ingest/setpath.sh /opt/spt/spt3g_ingest" >> $$WRAPPER_NAME

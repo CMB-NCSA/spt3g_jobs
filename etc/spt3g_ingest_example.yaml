@@ -5,7 +5,7 @@ N_nodes: 1
 N_cores: 1
 
 # The amount of tile requested in format hh:mm:ss
-time_requested: "42:00:00"
+time_requested: "60:00:00"
 # The amount of memory per core(?) in Gb
 memory: 12
 # The name of the partition (i.e. caps, ncsa)
@@ -15,6 +15,9 @@ node_list: ccc0247
 # The array of nodes (to map $SLURM_ARRAY_TASK_ID)
 node_array: "0-19"
 singExec_name: singExec.sh
+
+# Default name for the submit files
+submit_dir: submit_dir
 
 # Singulary Definitions
 singularity_cache: /projects/caps/spt3g/singularity
