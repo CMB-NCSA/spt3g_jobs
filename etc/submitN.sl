@@ -4,7 +4,7 @@
 #SBATCH -t $time_requested
 #SBATCH --mem=${memory}G
 #SBATCH --partition=$partition_name
-#SBATCH --nodelist=$node_list
+##SBATCH --nodelist=$node_list
 
 #SBATCH --array=$node_array
 #SBATCH --output=$submit_dir/logs/job_array_example_%A_%a.out
