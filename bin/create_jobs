@@ -26,6 +26,8 @@ def cmdline():
                         help="The number of nodes requested")
     parser.add_argument("--N_cores", type=int, action="store", default=1,
                         help="The number of cores requested")
+    parser.add_argument("--cpus_per_task", type=int, action="store", default=1,
+                        help="The number of cpu-per-task (paied with --np)")
     parser.add_argument("--time_requested", type=str, action="store", default="00:40:00",
                         help="The amount of time requested")
     parser.add_argument("--memory", type=int, action="store", default=16,
