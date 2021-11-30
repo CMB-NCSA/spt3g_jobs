@@ -2,6 +2,7 @@
 import argparse
 import math
 import os
+import magic
 
 
 def cmdline():
@@ -28,6 +29,9 @@ def cmdline():
     # The total number of files
     args.nfiles = len(args.files)
 
+    # Check of list of file with list
+    args = check_inputs(args)
+
     # Define chunks and nperchunk
     if args.nchunks is not None:
         args.nperchunk = math.ceil(args.nfiles/args.nchunks)
@@ -39,6 +43,22 @@ def cmdline():
 def chunker(seq, size):
     "Chunk a sequence in chunks of a given size"
     return (seq[pos:pos + size] for pos in range(0, len(seq), size))
+
+
+def check_inputs(args):
+    "Check if inputs is a list or a file with lists"
+    t = magic.Magic(mime=True)
+    if args.nfiles == 1 and t.from_file(args.files[0]) == 'text/plain':
+        print(f"{args.files[0]} is a list of files")
+        # Now read them in
+        with open(args.files[0], 'r') as f:
+            lines = f.read().splitlines()
+        print(f"Read: {len(lines)} input files")
+        args.files = lines
+        args.nfiles = len(lines)
+    else:
+        print("Nothing to see here")
+    return args
 
 
 if __name__ == "__main__":
