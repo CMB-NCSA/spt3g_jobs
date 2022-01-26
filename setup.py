@@ -5,7 +5,7 @@ import glob
 bin_files = glob.glob("bin/*")
 
 # Build the structure for etc folder
-etc_dirs = ['etc']
+etc_dirs = ['etc', 'doc']
 data_files = [("", ["setpath.sh"])]
 # In case we want files in etc
 for edir in etc_dirs:
