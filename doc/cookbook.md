@@ -1,8 +1,14 @@
 Installation:
 -------
+We need to use the miniconda installation on the ICC `projects` file system
+```
+source /projects/caps/spt3g/opt/miniconda3/bin/activate
+```
+Now git clone and install into miniconda path
 ```
 git clone https://github.com/CMB-NCSA/spt3g_jobs.git 
 cd spt3g_jobs.git
+python setup.py install 
 ```
 
 Environment:
