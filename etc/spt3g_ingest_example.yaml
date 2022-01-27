@@ -21,14 +21,12 @@ submit_dir: submit_dir
 
 # Singulary Definitions
 singularity_cache: /projects/caps/spt3g/singularity
-singularity_image: spt3g_ingest-ubuntu_0.2.2_13ccb00c.sif
+singularity_image: spt3g_ingest-ubuntu_0.2.9_4efaaf2f.sif
 
 # The call that will go inside the singExec script:
 cmd_call: >
   g3_worker ${INPUTLIST}
   --outdir /projects/caps/spt3g/test-maps
   --mask /projects/caps/spt3g/masks/mask_2021_50mJy.g3
-  --coadd /projects/caps/spt3g/raw/yearly_winter_2020/yearly_90GHz_winter_2020_tonly.g3.gz
-  --fpack
   --filter_transient
   --band 90GHz
