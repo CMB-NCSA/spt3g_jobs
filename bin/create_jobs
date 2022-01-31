@@ -83,7 +83,7 @@ def get_node_array(loop_list):
 def select_from_loop_list(loop_list, index):
     selected_lines = []
     for k in index:
-        selected_lines.append(linecache.getline(loop_list, int(k)))
+        selected_lines.append(linecache.getline(loop_list, int(k)+1))
 
     # Add them to a new loop_list
     loop_list_selected = loop_list + ".selec"
