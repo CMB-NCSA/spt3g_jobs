@@ -31,4 +31,4 @@ cmd_call: >
   --outdir /projects/caps/spt3g/test-maps
   --mask /projects/caps/spt3g/masks/mask_2021_50mJy.g3
   --filter_transient
-  --np ${cpu_per_task}
+  --np ${cpus_per_task}
