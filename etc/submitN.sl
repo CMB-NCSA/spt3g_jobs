@@ -1,4 +1,5 @@
 #!/bin/bash -l
+#SBATCH --job-name=$job_name
 #SBATCH -N $N_nodes
 #SBATCH -n $N_cores
 #SBATCH -t $time_requested
