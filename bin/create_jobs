@@ -51,6 +51,8 @@ def cmdline():
                         help="The command call string")
     parser.add_argument("--submit_dir", type=str, action="store", default="submit_dir",
                         help="The output directory")
+    parser.add_argument("--use_srun", action="store_true", default=False,
+                        help="Use srun in slurm call")
 
     # Re-run a set of indeces for the arrays
     parser.add_argument("--redo_index", default=None, nargs='+',
@@ -67,6 +69,11 @@ def cmdline():
     # Set the defaults of argparse using the values in the yaml config file
     parser.set_defaults(**conf_defaults)
     args = parser.parse_args(args=remaining_argv)
+
+    if args.use_srun:
+        args.srun = 'srun'
+    else:
+        args.srun = ''
 
     # Update the cmd_call
     args.cmd_call = args.cmd_call.replace("${cpus_per_task}", str(args.cpus_per_task))

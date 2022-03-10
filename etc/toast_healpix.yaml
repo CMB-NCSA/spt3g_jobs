@@ -3,39 +3,39 @@
 # Number of cores and nodes
 N_nodes: 1
 N_cores: 1
-cpus_per_task: 6
+cpus_per_task: 1
 
 # The amount of tile requested in format hh:mm:ss
 time_requested: "60:00:00"
 # The amount of memory per core(?) in Gb
-memory: 12
+memory: 90
 # The name of the partition (i.e. caps, ncsa)
 partition_name: caps
 # The list of nodes
-# node_list: ccc0247
-# The array of nodes (to map $SLURM_ARRAY_TASK_ID) -- leave undefined. It will computed
-# from the loop_list
-# node_array: "0-19"
+# node_list: ccc0248
+# The array of nodes (to map $SLURM_ARRAY_TASK_ID)
+node_array: "0-39"
 singExec_name: singExec.sh
 
 # Default name for the submit files
-submit_dir: submit_dir
+submit_dir: submit_dir_toast
 
 # Singulary Definitions
 singularity_cache: /projects/caps/spt3g/singularity
-singularity_image: spt3g_ingest-ubuntu_0.2.9_4efaaf2f.sif
+singularity_image: toast_ubuntu-0f8e6b5.sif
 
-# Do we want to use `srun`
-use_srun: True
+# Do we want to use `srun`?
+use_srun: False
 
 # The init call for singularity
 cmd_init:
-  source /opt/spt/setSPTEnv.sh
+    source /opt/toast/set_toast.sh
 
 # The call that will go inside the singExec script:
 cmd_call: >
-  g3_worker ${INPUTLIST}
-  --outdir /projects/caps/spt3g/test-maps
-  --mask /projects/caps/spt3g/masks/mask_2021_50mJy.g3
-  --filter_transient
-  --np ${cpus_per_task}
+  run_toast_healpix_coadd ${INPUTLIST}
+  --outdir /projects/caps/cmbs4/sims/healpix_maps
+  --nside_submap 4096
+  --indirect_write
+  --indirect_write_path /tmp
+  --indirect_write

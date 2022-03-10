@@ -3,29 +3,28 @@
 # Number of cores and nodes
 N_nodes: 1
 N_cores: 1
-cpus_per_task: 6
+cpus_per_task: 8
 
 # The amount of tile requested in format hh:mm:ss
 time_requested: "60:00:00"
 # The amount of memory per core(?) in Gb
-memory: 12
+memory: 64
 # The name of the partition (i.e. caps, ncsa)
 partition_name: caps
 # The list of nodes
-# node_list: ccc0247
-# The array of nodes (to map $SLURM_ARRAY_TASK_ID) -- leave undefined. It will computed
-# from the loop_list
-# node_array: "0-19"
+# node_list: ccc0248
+# The array of nodes (to map $SLURM_ARRAY_TASK_ID)
+node_array: "0-39"
 singExec_name: singExec.sh
 
 # Default name for the submit files
-submit_dir: submit_dir
+submit_dir: submit_dir_allbands
 
 # Singulary Definitions
 singularity_cache: /projects/caps/spt3g/singularity
-singularity_image: spt3g_ingest-ubuntu_0.2.9_4efaaf2f.sif
+singularity_image: spt3g_ingest-ubuntu_0.3.3_4efaaf2f.sif
 
-# Do we want to use `srun`
+# Do we want to use `srun`?
 use_srun: True
 
 # The init call for singularity
@@ -35,7 +34,9 @@ cmd_init:
 # The call that will go inside the singExec script:
 cmd_call: >
   g3_worker ${INPUTLIST}
-  --outdir /projects/caps/spt3g/test-maps
+  --outdir /projects/caps/spt3g/Feb-2022-all
   --mask /projects/caps/spt3g/masks/mask_2021_50mJy.g3
   --filter_transient
+  --indirect_write
+  --indirect_write_path /dev/shm
   --np ${cpus_per_task}

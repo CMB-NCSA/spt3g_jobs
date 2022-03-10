@@ -12,4 +12,4 @@
 #SBATCH --output=$submit_dir/logs/job_array_example_%A_%a.out
 #SBATCH --error=$submit_dir/logs/job_array_example_%A_%a.err
 
-srun $singExec_fullname
+$srun $singExec_fullname
