@@ -1,0 +1,37 @@
+# Example configuration file
+#
+# Number of cores and nodes
+N_nodes: 1
+N_cores: 1
+cpus_per_task: 8
+
+# The amount of tile requested in format hh:mm:ss
+time_requested: "60:00:00"
+# The amount of memory per core(?) in Gb
+memory: 64
+# The name of the partition (i.e. caps, ncsa)
+partition_name: "caps-himem"
+# The list of nodes
+# node_list: ccc0248
+# The array of nodes (to map $SLURM_ARRAY_TASK_ID)
+node_array: "0-39"
+singExec_name: singExec.sh
+
+# Default name for the submit files
+submit_dir: submit_dir_allbands
+
+# Singulary Definitions
+singularity_cache: /projects/caps/spt3g/singularity
+singularity_image: spt3g_ingest-ubuntu_0.3.4_8a5d1d1c.sif
+
+# The call that will go inside the singExec script:
+cmd_call: >
+  g3_worker ${INPUTLIST}
+  --outdir /projects/caps/spt3g/products/maps/test-2022Aug08
+  --mask /projects/caps/spt3g/masks/mask_2021_50mJy.g3
+  --filter_transient
+  --indirect_write
+  --indirect_write_path /dev/shm
+  --stage
+  --stage_path /dev/shm
+  --np ${cpus_per_task}
