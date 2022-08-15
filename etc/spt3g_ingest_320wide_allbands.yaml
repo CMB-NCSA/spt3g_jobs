@@ -24,17 +24,10 @@ submit_dir: submit_dir_allbands
 singularity_cache: /projects/caps/spt3g/singularity
 singularity_image: spt3g_ingest-ubuntu_0.3.3_4efaaf2f.sif
 
-# Do we want to use `srun`?
-use_srun: True
-
-# The init call for singularity
-cmd_init:
-  source /opt/spt/setSPTEnv.sh
-
 # The call that will go inside the singExec script:
 cmd_call: >
   g3_worker ${INPUTLIST}
-  --outdir /projects/caps/spt3g/Feb-2022-all
+  --outdir /projects/caps/spt3g/products/maps/2022Aug08
   --mask /projects/caps/spt3g/masks/mask_2021_50mJy.g3
   --filter_transient
   --indirect_write
