@@ -58,6 +58,12 @@ def cmdline():
     parser.add_argument("--redo_index", default=None, nargs='+',
                         help="The list of indeces to re-run")
 
+    # include and exclude nodes (optional)
+    parser.add_argument("--nodelist", type=str, action="store", default=None,
+                        help="The coma-separated list of nodes to use (default=None)")
+    parser.add_argument("--exclude", type=str, action="store", default=None,
+                        help="The coma-separated list of nodes to use (default=None)")
+
     # Define the singularity image
     parser.add_argument("--singularity_cache", type=str, action="store",
                         default='/projects/caps/spt3g/singularity/',
@@ -152,5 +158,11 @@ if __name__ == "__main__":
     print(f"# Slurm submit file: {outfile_submitN}")
     print("# Done")
 
+    cmd = "\t sbatch"
+    if args.exclude:
+        cmd = f"{cmd} --exclude {args.exclude}"
+    if args.nodelist:
+        cmd = f"{cmd} --nodelist {args.nodelist}"
+
     print("# to run:")
-    print(f"\t sbatch {outfile_submitN}")
+    print(f"{cmd} {outfile_submitN}")
