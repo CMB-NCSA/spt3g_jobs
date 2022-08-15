@@ -35,8 +35,6 @@ def cmdline():
                         help="The memory in Gb")
     parser.add_argument("--partition_name", type=str, action="store", default="caps",
                         help="The name of the ICC partition (i.e. caps)")
-    parser.add_argument("--node_list", type=str, action="store", default=None,
-                        help="The node list, i.e. ccc0246")
     parser.add_argument("--node_array", type=str, action="store", default=None,
                         help="The node array, i.e. 0-19")
     parser.add_argument("--singExec_name", type=str, action="store", default='singExec.sh',
