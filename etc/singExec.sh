@@ -12,6 +12,7 @@ SINGULARITY_APP=$singularity_cache/$singularity_image
 DATE=`date +"%F%Z%R"`
 WRAPPER_NAME=$$PWD/wrapper_$${DATE}_$${SLURM_ARRAY_TASK_ID}.sh
 echo "#!/bin/bash" > $$WRAPPER_NAME
+echo $cmd_init >> $$WRAPPER_NAME
 echo $cmd_call >> $$WRAPPER_NAME
 chmod +x $$WRAPPER_NAME
 
@@ -21,6 +22,7 @@ echo "Singulary image: $${SINGULARITY_APP}"
 echo "Input list: $${INPUTLIST}"
 echo "WRAPPER_NAME: $${WRAPPER_NAME}"
 echo "Running command:"
+echo " ${cmd_init}"
 echo " ${cmd_call}"
 echo ""
 

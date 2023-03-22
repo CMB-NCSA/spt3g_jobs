@@ -5,6 +5,7 @@ import yaml
 import os
 import stat
 import linecache
+import spt3g_jobs
 
 
 def cmdline():
@@ -115,6 +116,8 @@ def update_template(filename, d, outfile):
 
 
 if __name__ == "__main__":
+
+    print(f"Running spt3g_jobs version: {spt3g_jobs.__version__}")
 
     # Get the command-line arguments
     args = cmdline()

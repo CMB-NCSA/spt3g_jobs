@@ -13,7 +13,7 @@ for edir in etc_dirs:
 
 # The main call
 setup(name='spt3g_jobs',
-      version='0.2.4',
+      version='0.2.5',
       license="GPL",
       description="ICC slurm jobs for SPT3G/CAPS",
       author="Felipe Menanteau",
