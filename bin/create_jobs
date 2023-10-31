@@ -73,9 +73,15 @@ def cmdline():
                         default='ubuntu_0.2.1_13ccb00c.si',
                         help="The name of the singularity image to use")
 
+    parser.add_argument("--version", action="store_true", default=False,
+                        help="Print version and exit")
+
     # Set the defaults of argparse using the values in the yaml config file
     parser.set_defaults(**conf_defaults)
     args = parser.parse_args(args=remaining_argv)
+
+    if args.version:
+        print(f"Running spt3g_jobs version: {spt3g_jobs.__version__}")
 
     if args.use_srun:
         args.srun = 'srun'
