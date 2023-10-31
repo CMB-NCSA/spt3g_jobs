@@ -10,7 +10,8 @@ time_requested: "60:00:00"
 # The amount of memory per core(?) in Gb
 memory: 64
 # The name of the partition (i.e. caps, ncsa)
-partition_name: caps
+partition_name: caps-main
+account: caps
 # The list of nodes
 # node_list: ccc0248
 # The array of nodes (to map $SLURM_ARRAY_TASK_ID)

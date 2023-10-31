@@ -34,7 +34,9 @@ def cmdline():
                         help="The amount of time requested")
     parser.add_argument("--memory", type=int, action="store", default=16,
                         help="The memory in Gb")
-    parser.add_argument("--partition_name", type=str, action="store", default="caps",
+    parser.add_argument("--partition_name", type=str, action="store", default="caps-main",
+                        help="The name of the ICC partition (i.e. caps)")
+    parser.add_argument("--account", type=str, action="store", default="caps",
                         help="The name of the ICC partition (i.e. caps)")
     parser.add_argument("--node_array", type=str, action="store", default=None,
                         help="The node array, i.e. 0-19")
