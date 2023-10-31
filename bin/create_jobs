@@ -82,6 +82,7 @@ def cmdline():
 
     if args.version:
         print(f"Running spt3g_jobs version: {spt3g_jobs.__version__}")
+        exit()
 
     if args.use_srun:
         args.srun = 'srun'
