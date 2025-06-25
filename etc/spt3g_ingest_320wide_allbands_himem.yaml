@@ -24,10 +24,13 @@ submit_dir: submit_dir_allbands
 singularity_cache: /projects/caps/spt3g/singularity
 singularity_image: spt3g_ingest-ubuntu_0.3.4_8a5d1d1c.sif
 
+# the outdir
+outdir: /projects/caps/spt3g/products/maps/test-2022Aug08
+
 # The call that will go inside the singExec script:
 cmd_call: >
   g3_worker ${INPUTLIST}
-  --outdir /projects/caps/spt3g/products/maps/test-2022Aug08
+  --outdir ${outdir}
   --mask /projects/caps/spt3g/masks/mask_2021_50mJy.g3
   --filter_transient
   --indirect_write

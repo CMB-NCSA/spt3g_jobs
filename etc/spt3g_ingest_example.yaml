@@ -28,6 +28,9 @@ singularity_image: spt3g_ingest-ubuntu_0.2.9_4efaaf2f.sif
 # Do we want to use `srun`
 use_srun: True
 
+# The outdir
+outdir: projects/ncsa/caps/spt3g/test-maps
+
 # The init call for singularity
 cmd_init:
   source /opt/spt/setSPTEnv.sh
@@ -35,7 +38,6 @@ cmd_init:
 # The call that will go inside the singExec script:
 cmd_call: >
   g3_worker ${INPUTLIST}
-  --outdir /projects/caps/spt3g/test-maps
-  --mask /projects/caps/spt3g/masks/mask_2021_50mJy.g3
+  --outdir ${outdir}
   --filter_transient
   --np ${cpus_per_task}
