@@ -93,7 +93,11 @@ def cmdline():
 
     # Update node_array
     if args.redo_index:
-        args.node_array - get_node_array(args.redo_index)
+        count = len(args.redo_index)
+        if count == 1:
+            args.node_array = "0"
+        else:
+            args.node_array = f"0-{count-1}"
 
     # Update the cmd_call
     args.cmd_call = args.cmd_call.replace("${cpus_per_task}", str(args.cpus_per_task))
